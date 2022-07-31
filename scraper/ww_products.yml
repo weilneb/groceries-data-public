@@ -1,0 +1,20 @@
+---
+products:
+  - category: 'oats'
+    urls:
+      - https://www.woolworths.com.au/shop/productdetails/700525/macro-organic-quick-oats
+  - category: 'milk'
+    urls:
+      - https://www.woolworths.com.au/shop/productdetails/799811/woolworths-free-from-lactose-full-cream-milk
+      - https://www.woolworths.com.au/shop/productdetails/151548/woolworths-full-cream-milk
+  - category: 'beef'
+    urls:
+      - https://www.woolworths.com.au/shop/productdetails/577864/woolworths-beef-mince
+      - https://www.woolworths.com.au/shop/productdetails/675479/woolworths-beef-oyster-blade-steak
+  - category: 'chicken'
+    urls:
+      - https://www.woolworths.com.au/shop/productdetails/764859/macro-free-range-chicken-thigh-fillet
+      - https://www.woolworths.com.au/shop/productdetails/77069/chicken-thigh-fillet
+  - category: 'eggs'
+    urls:
+      - https://www.woolworths.com.au/shop/productdetails/254729/woolworths-12-large-free-range-eggs
