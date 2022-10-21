@@ -1,28 +1,26 @@
 import json
-import boto3
 from collections import defaultdict
 
+import boto3
+
 dynamodb = boto3.resource('dynamodb')
-groceries_categories = dynamodb.Table('groceries_categories')
+products = dynamodb.Table('gd_v2_products')
 
 
 def lambda_handler(event, context):
-    response = groceries_categories.scan()
+    response = products.scan()
     items = response['Items']
-    categories = set(map(lambda x: x['category'], items))
+    print(items)
 
-    d = defaultdict(list)
+    category_to_prod = defaultdict(list)
     for item in items:
-        d[item['category']].append(item['url'])
-    as_list = []
-    for k, v in d.items():
-        as_list.append({
-            'category': k,
-            'urls': v
-        })
+        category_to_prod[item['category']].append(item)
+
+    print(category_to_prod)
+
     return {
         'statusCode': 200,
-        'body': json.dumps(as_list),
+        'body': json.dumps(category_to_prod),
         'headers': {
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Origin': '*',

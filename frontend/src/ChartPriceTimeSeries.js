@@ -7,18 +7,18 @@ import Link from '@mui/material/Link';
 
 export function ChartPriceTimeSeries(props) {
   return (
-    <Grid container xs={12} md={6} key={props.productName}>
-      <Grid container key={`${props.productName}-title`}>
+    <Grid container xs={12} key={props.productName}>
+      <Grid item xs={12} key={`${props.productName}-title`}>
         <Link href={props.productUrl}>
             <Typography variant='h6'>{props.productName}</Typography>
         </Link>
       </Grid>
-      <Grid container key={`${props.productName}-chart`}>
-        <ResponsiveContainer width='100%' minWidth={600} height={300}>
-          <LineChart margin={{ top: 20, bottom: 20, right: 20, left: 20}}
+      <Grid item xs={12} key={`${props.productName}-chart`}>
+        <ResponsiveContainer minHeight={350}>
+          <LineChart width={'100%'} height={'100%'} margin={{ top: 20, bottom: 0, right: 20, left: 0}}
             data={props.priceData}
           >
-            <XAxis dataKey="ts" scale="time" tickFormatter={(x) => moment(x).fromNow()} />
+            <XAxis dataKey="ts" domain={['dataMin', 'dataMax']} type="number" tickFormatter={(x) => moment(x).fromNow()} />
             <YAxis dataKey="price" domain={['dataMin', 'dataMax']} tickFormatter={(x) => x.toFixed(2)}/>
             <Tooltip labelFormatter={(x) => moment(x).format('MMMM Do YYYY')}
               formatter={(value, name, props) => {

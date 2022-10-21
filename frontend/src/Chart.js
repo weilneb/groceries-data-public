@@ -2,23 +2,26 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { ChartPriceTimeSeries } from './ChartPriceTimeSeries';
+import getRestApiBaseUrl from './config';
 
-const BASE_URL = 'https://wzoujjhpbc.execute-api.ap-southeast-2.amazonaws.com/dev/groceries/price-history'
 
-function priceHistoryUrl(productUrl) {
-  const params = new URLSearchParams({ url: productUrl });
-  return `${BASE_URL}?${params}`;
+function priceHistoryUrl(productId) {
+  const params = new URLSearchParams({ id: productId });
+  return `${getRestApiBaseUrl()}/groceries/price-history?${params}`;
 }
 
 function transformData(timeData) {
   return timeData.map(x => {
+    // moment() parses iso-8601: https://momentjs.com/guides/#/parsing/
+    // valueOf() gives unix milliseconds: https://momentjs.com/docs/#/displaying/unix-timestamp-milliseconds/
     return { ts: moment(x.timestamp).valueOf(), ...x };
   });
 }
 
 export function Chart(props) {
   const [data, setData] = useState(null);
-  const url = priceHistoryUrl(props.productUrl);
+  const {product} = props;
+  const url = priceHistoryUrl(product.id);
   useEffect(
     () => {
       fetch(url)
@@ -30,9 +33,7 @@ export function Chart(props) {
   )
 
   function loadedChart() {
-    const productName = data[0].name;
-    const productUrl = data[0].url;
-    return <ChartPriceTimeSeries priceData={data} productName={productName} productUrl={productUrl} key={productName} />;
+    return <ChartPriceTimeSeries priceData={data} productName={product.name} productUrl={product.url} key={product.url} />;
   }
 
   return (

@@ -5,3 +5,4 @@ from dataclasses import dataclass
 class ProductInfo:
     url: str
     category: str
+    name: str

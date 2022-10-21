@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import getRestApiBaseUrl from './config';
+
 export default function getProducts(callback) {
-  fetch('https://wzoujjhpbc.execute-api.ap-southeast-2.amazonaws.com/dev/groceries/products')
+  fetch(`${getRestApiBaseUrl()}/groceries/products`)
     .then(response => response.json())
     .then(json_data => {
-      json_data.sort((a,b) => a.category.localeCompare(b.category));
+      console.log(json_data);
       callback(json_data);
     });
 

@@ -3,13 +3,14 @@ from typing import Optional
 
 from peewee import DoesNotExist
 
-from app.db import Schedule, ScheduleStatus
+from app.db import Schedule, ScheduleStatus, Product
 
 
 def get_next_to_scrape() -> Optional[Schedule]:
     try:
-        return Schedule.select().where(
-            (Schedule.status == ScheduleStatus.SCHEDULED)
+        return Schedule.select(Schedule, Product).join(Product).where(
+            (Schedule.status == ScheduleStatus.SCHEDULED) &
+            Schedule.product.enabled
         ).order_by(
             Schedule.scheduled_for.asc()
         ).limit(1).get()

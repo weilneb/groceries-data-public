@@ -21,13 +21,13 @@ def get_database():
 def list_all_products():
     logger.info("Listing products...")
     for p in Product.select():
-        logger.info(f"id={p.id_}, url={p.url}, category={p.category}")
+        logger.info(p)
 
 
 def list_all_schedule():
     logger.info("Listing schedule...")
     for s in Schedule.select().order_by(Schedule.id_.desc()).limit(30):
-        logger.info(f"{s.id_}, {s.product}, {s.scheduled_for}, {s.status}")
+        logger.info(s)
 
 
 class BaseModel(Model):
@@ -36,12 +36,13 @@ class BaseModel(Model):
 
 
 class Product(BaseModel):
-    id_ = AutoField(column_name='id')
+    name = TextField(primary_key=True)
     url = TextField(unique=True)
     category = TextField()
+    enabled = BooleanField(default=True)
 
     def __str__(self):
-        return self.url
+        return f'Product(name={self.name}, url={self.url}, enabled={self.enabled})'
 
 
 class ScheduleStatus(Enum):
@@ -69,6 +70,9 @@ class Schedule(BaseModel):
     scheduled_for = DateTimeField(default=datetime.now)
     status = ScheduleStatusField(default=ScheduleStatus.SCHEDULED)
     error = TextField(null=True)
+
+    def __str__(self):
+        return f'Schedule(id={self.id_}, product={self.product}, scheduled_for={self.scheduled_for}, status={self.status})'
 
 
 def create_tables():

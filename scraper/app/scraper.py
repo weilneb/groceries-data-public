@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium_stealth import stealth
 from selenium.webdriver.chrome.service import Service
-from app.product_dto import Product, UnitPrice
+from app.product_dto import ProductDTO, UnitPrice
 from contextlib import contextmanager
 from bs4 import BeautifulSoup
 import logging
@@ -46,7 +46,7 @@ def parse_unit_price(unit_price: str):
         return UnitPrice(price=price, unit=unit)
 
 
-def get_product_price(url: str, category: str = None, timeout_seconds=10) -> Product:
+def get_product_price(id_: str, url: str, category: str = None, timeout_seconds=10) -> ProductDTO:
     logger.info(f"Getting product price for: {url} {category}")
     with get_driver() as driver:
         driver.get(url)
@@ -56,10 +56,10 @@ def get_product_price(url: str, category: str = None, timeout_seconds=10) -> Pro
             )
         )
         html = driver.page_source
-        return parse_product_html(html, url=url, category=category)
+        return parse_product_html(html, url=url, category=category, id_=id_)
 
 
-def parse_product_html(html: str, url: str, category: str) -> Product:
+def parse_product_html(html: str, id_: str, url: str, category: str) -> ProductDTO:
     soup = BeautifulSoup(html, 'html.parser')
     product_title = soup.select_one("h1.shelfProductTile-title").text
     dollars = soup.select_one(PRICE_DOLLARS_SELECTOR).text
@@ -67,7 +67,7 @@ def parse_product_html(html: str, url: str, category: str) -> Product:
     unit_price_text = soup.select_one(".shelfProductTile-information .shelfProductTile-cupPrice").text
     unit_price_parsed = parse_unit_price(unit_price_text)
     price = float(f"{dollars}.{cents}")
-    p = Product(name=product_title, category=category, url=url, price=price, unit_price=unit_price_parsed)
+    p = ProductDTO(id=id_, name=product_title, category=category, url=url, price=price, unit_price=unit_price_parsed)
     logger.info(f'{p}')
     return p
 

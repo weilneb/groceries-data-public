@@ -19,7 +19,8 @@ def now_utc() -> datetime:
 
 @dataclass_json
 @dataclass
-class Product:
+class ProductDTO:
+    id: str
     name: str
     category: str
     url: str
@@ -35,9 +36,9 @@ class Product:
 
 
 if __name__ == '__main__':
-    p1 = Product(name="abc", price=1.23, category="A", url="http://aaa.com")
-    p2 = Product(name="xyz", price=1.23, category="B", url="http://bbb.com",
-                 unit_price=UnitPrice(price=4.56, unit="1L"))
+    p1 = ProductDTO(id="a", name="abc", price=1.23, category="A", url="http://aaa.com")
+    p2 = ProductDTO(id="b", name="xyz", price=1.23, category="B", url="http://bbb.com",
+                    unit_price=UnitPrice(price="4.56", unit="1L"))
     print(p1, p2)
     print(p1.to_json())
     print(p2.to_json())

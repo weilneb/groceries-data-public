@@ -5,7 +5,7 @@ import pytest
 import selenium.webdriver.support.ui
 
 from app import scraper
-from app.product_dto import UnitPrice, Product
+from app.product_dto import UnitPrice, ProductDTO
 from selenium.common.exceptions import TimeoutException
 
 URL = 'http://a.com/product'
@@ -43,7 +43,8 @@ def driver_for_when_product_in_stock():
     yield magic_mock
 
 
-def assert_in_stock_product_scraped(product: Product):
+def assert_in_stock_product_scraped(product: ProductDTO):
+    assert product.id == 'product-1'
     assert product.name == 'Oat Milk'
     assert product.url == URL
     assert product.category == CATEGORY
@@ -57,6 +58,7 @@ class TestGetProductPrice:
     @patch.object(scraper, 'get_driver', side_effect=driver_for_when_product_in_stock)
     def test_when_product_in_stock(self, mock_driver, mock_wait):
         product = scraper.get_product_price(
+            id_='product-1',
             url='http://a.com/product',
             category='Category'
         )
@@ -69,6 +71,7 @@ class TestGetProductPrice:
     def test_when_product_out_of_stock(self, mock_driver, mock_wait):
         with pytest.raises(TimeoutException):
             scraper.get_product_price(
+                id_='product-1',
                 url='',
                 category='',
                 timeout_seconds=0
@@ -77,5 +80,5 @@ class TestGetProductPrice:
 
 class TestParseProductHTML:
     def test_when_product_in_stock(self):
-        product = scraper.parse_product_html(html=HTML_PRODUCT_IN_STOCK, url=URL, category=CATEGORY)
+        product = scraper.parse_product_html(html=HTML_PRODUCT_IN_STOCK, id_='product-1', url=URL, category=CATEGORY)
         assert_in_stock_product_scraped(product)

@@ -13,18 +13,22 @@ function App() {
       setProductsByCategory(products);
     })
   }, []);
-  return (<Container maxWidth={false} disableGutters>
+  return (<Container maxWidth={'lg'}>
     <Grid>
-      <Typography variant='h2' sx={{fontWeight : 'medium'}}>Groceries Price History</Typography>
+      <Typography variant='h2' sx={{ fontWeight: 'medium' }}>Groceries Price History</Typography>
     </Grid>
-    <Divider/>
+    <Divider />
     {productsByCategory === null && 'Loading...'}
-    {productsByCategory !== null && productsByCategory.map(d => {
-      return <Grid container key={d.category} my={3} disableGutters>
-        <Grid xs={12} key={`${d.category}-title`}>
-          <Typography variant='h3' sx={{fontWeight : 'regular'}} py={1}>{d.category}</Typography>
+    {productsByCategory !== null && Object.entries(productsByCategory).map(([category, products]) => {
+      return <Grid container key={category} py={3} rowSpacing={2} columnSpacing={2}>
+        <Grid item xs={12} key={`${category}-title`}>
+          <Typography variant='h3' sx={{ fontWeight: 'regular' }}>{category}</Typography>
         </Grid>
-        {d.urls.map(url => <Chart productUrl={url} key={url} />)}
+        {products.map(product => 
+          <Grid item xs={12} md={6}>
+            <Chart product={product} key={product.id} />
+          </Grid>
+          )}
       </Grid>
 
     }).reduce((a, b) => [a, <Divider />, b])}
