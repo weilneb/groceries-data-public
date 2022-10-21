@@ -11,7 +11,7 @@ Main Components:
 - Rest API exposed by API Gateway
 - DynamoDB tables - Price History Data
 - Scraper - running on a home PC
-![Backend System Design](https://user-images.githubusercontent.com/10220603/194469323-3cda7627-f405-4fa3-9f7f-a954aa0ecdf1.png)
+![Backend System Design](https://user-images.githubusercontent.com/10220603/197082334-687c44bd-b586-4a6f-9069-58f5ca614bf8.png)
 
 ## Scraper
 Uses a Debian Docker container, running Python and Selenium (Chrome) to scrape product info and price data.
