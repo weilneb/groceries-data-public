@@ -32,7 +32,6 @@ Calls the REST API exposed by the backend API Gateway.
   - Make it look better.
   - Chart: adjust timescale by day, week, month, year.
   - Product images
-- Handle when supermarket website changes the URL for a product.
 - Support other supermarket websites
 - Compare product pricing between websites
 - Cloudformation template for all AWS resources used
